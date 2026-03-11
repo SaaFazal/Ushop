@@ -21,7 +21,7 @@ export default function RootLayout({
       <body className={`${inter.className} bg-zinc-950 text-zinc-50 min-h-screen`}>
         <MobileNav />
         <Sidebar aria-hidden="false" className="hidden lg:flex fixed left-0 top-0 h-screen z-50" />
-        <main className="lg:pl-64 min-h-screen pt-16 lg:pt-0">
+        <main className="lg:pl-64 min-h-screen pt-16 pb-24 lg:pt-0 lg:pb-0">
           <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
             {children}
           </div>
