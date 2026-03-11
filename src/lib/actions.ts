@@ -2,6 +2,7 @@
 
 import prisma from './db';
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 export async function addProduct(formData: FormData) {
   const name = formData.get('name') as string;
@@ -28,6 +29,7 @@ export async function addProduct(formData: FormData) {
   });
 
   revalidatePath('/inventory');
+  redirect('/inventory');
 }
 
 export async function stockIn(formData: FormData) {
