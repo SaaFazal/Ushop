@@ -78,6 +78,7 @@ export default async function ProductsPage() {
                 </td>
               </tr>
             ) : (
+              products.map((product: any) => (
                 <tr key={product.id} className="hover:bg-zinc-800/30 transition-colors border-b border-zinc-800/50 last:border-0">
                   <td className="px-4 py-4 sm:px-6">
                     <div className="flex items-center gap-3">

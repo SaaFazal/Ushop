@@ -29,11 +29,11 @@ const menuItems = [
   { icon: Settings, label: 'Settings', href: '/settings' },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ className, "aria-hidden": ariaHidden }: { className?: string; "aria-hidden"?: string }) {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 h-screen bg-zinc-950 border-r border-zinc-800 flex flex-col fixed left-0 top-0">
+    <aside className={cn("w-64 h-screen bg-zinc-950 border-r border-zinc-800 flex flex-col fixed left-0 top-0 z-50", className)} aria-hidden={ariaHidden}>
       <div className="p-6">
         <h1 className="text-xl font-bold text-white tracking-tight flex items-center gap-2">
           <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
