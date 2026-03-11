@@ -27,10 +27,10 @@ export default async function ProductsPage() {
           <h2 className="text-3xl font-bold tracking-tight text-white">Product Master</h2>
           <p className="text-zinc-500 mt-1">Manage your product catalog and stock levels.</p>
         </div>
-        <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-medium transition-colors">
+        <Link href="/inventory/new" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-medium transition-colors">
           <Plus className="w-5 h-5" />
           Add Product
-        </button>
+        </Link>
       </div>
 
       {/* Filters & Search */}

@@ -29,7 +29,7 @@ const menuItems = [
   { icon: Settings, label: 'Settings', href: '/settings' },
 ];
 
-export default function Sidebar({ className, "aria-hidden": ariaHidden }: { className?: string; "aria-hidden"?: string }) {
+export default function Sidebar({ className, "aria-hidden": ariaHidden }: { className?: string; "aria-hidden"?: boolean | "true" | "false" }) {
   const pathname = usePathname();
 
   return (
