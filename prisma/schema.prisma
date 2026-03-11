@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Product {
+  id              String   @id @default(cuid())
+  name            String
+  barcode         String?  @unique
+  category        String
+  costPrice       Float
+  sellingPrice    Float
+  currentStock    Int      @default(0)
+  minStockLevel   Int      @default(5)
+  supplier        Supplier @relation(fields: [supplierId], references: [id])
+  supplierId      String
+  batches         Batch[]
+  orderItems      OrderItem[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Batch {
+  id          String    @id @default(cuid())
+  productId   String
+  product     Product   @relation(fields: [productId], references: [id])
+  quantity    Int
+  expiryDate  DateTime?
+  receivedAt  DateTime  @default(now())
+  batchNumber String?
+}
+
+model Supplier {
+  id              String   @id @default(cuid())
+  name            String
+  leadTime        Int      // in days
+  minOrderValue   Float
+  deliveryDays    String   // e.g., "Mon, Wed, Fri"
+  email           String?
+  products        Product[]
+  orders          Order[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  supplierId      String
+  supplier        Supplier    @relation(fields: [supplierId], references: [id])
+  status          String      // PENDING, COMPLETED, CANCELLED
+  totalAmount     Float
+  items           OrderItem[]
+  generatedAt     DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+model OrderItem {
+  id          String   @id @default(cuid())
+  orderId     String
+  order       Order    @relation(fields: [orderId], references: [id])
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id])
+  quantity    Int
+  price       Float
+}
