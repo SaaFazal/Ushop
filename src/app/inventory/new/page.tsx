@@ -129,7 +129,7 @@ export default async function NewProductPage() {
                   className="w-full bg-zinc-950 border border-zinc-800 rounded-xl pl-11 pr-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 appearance-none"
                 >
                   <option value="">Select Supplier</option>
-                  {suppliers.map(s => (
+                  {suppliers.map((s: any) => (
                     <option key={s.id} value={s.id}>{s.name}</option>
                   ))}
                 </select>

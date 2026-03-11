@@ -2,6 +2,7 @@ import React from 'react';
 import prisma from '@/lib/db';
 import { Scan, Calendar, Hash, ArrowLeft, Package, Check } from 'lucide-react';
 import Link from 'next/link';
+import { stockIn } from '@/lib/actions';
 
 async function getProducts() {
   return await prisma.product.findMany({ select: { id: true, name: true, barcode: true } });
@@ -22,30 +23,38 @@ export default async function StockInPage() {
         </div>
       </div>
 
-      <div className="grid gap-8 md:grid-cols-3">
+      <form action={stockIn} className="grid gap-8 md:grid-cols-3">
         {/* Left Column - Form */}
         <div className="md:col-span-2 bg-zinc-900 border border-zinc-800 rounded-2xl p-8 space-y-6">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-zinc-400 mb-2">Scan Barcode or Select Product</label>
+              <label className="block text-sm font-medium text-zinc-400 mb-2">Select Product</label>
               <div className="relative">
-                <Scan className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
-                <input 
-                  type="text" 
-                  placeholder="Scan item barcode..." 
-                  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl pl-11 pr-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
-                  autoFocus
-                />
+                <Package className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
+                <select 
+                  name="productId"
+                  required
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl pl-11 pr-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 appearance-none"
+                >
+                  <option value="">Choose a product...</option>
+                  {products.map((p: any) => (
+                    <option key={p.id} value={p.id}>
+                      {p.name} {p.barcode ? `(${p.barcode})` : ''}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-zinc-400 mb-2">Quantity Recieved</label>
+                <label className="block text-sm font-medium text-zinc-400 mb-2">Quantity Received</label>
                 <div className="relative">
-                  <Package className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
+                  <Hash className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
                   <input 
+                    name="quantity"
                     type="number" 
+                    required
                     placeholder="0" 
                     className="w-full bg-zinc-950 border border-zinc-800 rounded-xl pl-11 pr-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
                   />
@@ -56,6 +65,7 @@ export default async function StockInPage() {
                 <div className="relative">
                   <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
                   <input 
+                    name="expiryDate"
                     type="date" 
                     className="w-full bg-zinc-950 border border-zinc-800 rounded-xl pl-11 pr-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 [color-scheme:dark]"
                   />
@@ -68,6 +78,7 @@ export default async function StockInPage() {
               <div className="relative">
                 <Hash className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
                 <input 
+                  name="batchNumber"
                   type="text" 
                   placeholder="e.g., BATCH-123" 
                   className="w-full bg-zinc-950 border border-zinc-800 rounded-xl pl-11 pr-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
@@ -76,7 +87,10 @@ export default async function StockInPage() {
             </div>
           </div>
 
-          <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl transition-all shadow-lg active:scale-[0.98] flex items-center justify-center gap-2">
+          <button 
+            type="submit"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl transition-all shadow-lg active:scale-[0.98] flex items-center justify-center gap-2"
+          >
             <Check className="w-6 h-6" />
             Confirm Stock In
           </button>
@@ -105,7 +119,7 @@ export default async function StockInPage() {
             </p>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
