@@ -78,15 +78,18 @@ export default async function ProductsPage() {
                 </td>
               </tr>
             ) : (
-              products.map((product: any) => (
-                <tr key={product.id} className="hover:bg-zinc-800/30 transition-colors">
-                  <td className="px-6 py-4">
+                <tr key={product.id} className="hover:bg-zinc-800/30 transition-colors border-b border-zinc-800/50 last:border-0">
+                  <td className="px-4 py-4 sm:px-6">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center border border-zinc-700">
-                        <Package className="w-5 h-5 text-zinc-400" />
+                      <div className="w-12 h-12 rounded-xl bg-zinc-800 flex items-center justify-center border border-zinc-700 overflow-hidden shrink-0">
+                        {product.image ? (
+                          <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                        ) : (
+                          <Package className="w-6 h-6 text-zinc-500" />
+                        )}
                       </div>
-                      <div>
-                        <p className="text-sm font-medium text-white">{product.name}</p>
+                      <div className="min-w-0">
+                        <p className="text-sm font-bold text-white truncate">{product.name}</p>
                         <p className="text-xs text-zinc-500 flex items-center gap-1">
                           <Barcode className="w-3 h-3" />
                           {product.barcode || 'No Barcode'}
@@ -94,33 +97,25 @@ export default async function ProductsPage() {
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-zinc-800 text-zinc-300">
+                  <td className="px-4 py-4 sm:px-6 hidden md:table-cell">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold uppercase bg-zinc-800 text-zinc-400 border border-zinc-700">
                       {product.category}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-sm text-zinc-400">
-                    {product.supplier.name}
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                      <span className={`text-sm font-semibold ${product.currentStock <= product.minStockLevel ? 'text-red-400' : 'text-green-400'}`}>
+                  <td className="px-4 py-4 sm:px-6">
+                    <div className="flex flex-col">
+                      <span className={`text-sm font-bold ${product.currentStock <= product.minStockLevel ? 'text-red-400' : 'text-green-400'}`}>
                         {product.currentStock}
                       </span>
-                      {product.currentStock <= product.minStockLevel && (
-                        <span className="text-[10px] bg-red-950 text-red-500 px-1.5 py-0.5 rounded border border-red-900/50">LOW</span>
-                      )}
+                      <span className="text-[10px] text-zinc-500 uppercase font-medium">Available</span>
                     </div>
                   </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm font-medium text-white">£{product.sellingPrice.toFixed(2)}</div>
-                    <div className="text-xs text-zinc-500">Cost: £{product.costPrice.toFixed(2)}</div>
+                  <td className="px-4 py-4 sm:px-6 hidden lg:table-cell">
+                    <div className="text-sm font-bold text-white">£{product.sellingPrice.toFixed(2)}</div>
+                    <div className="text-[10px] text-zinc-500 uppercase">Margin: £{(product.sellingPrice - product.costPrice).toFixed(2)}</div>
                   </td>
-                  <td className="px-6 py-4 text-sm text-zinc-400">
-                    {product._count.batches} Active
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <button className="text-zinc-500 hover:text-white transition-colors">
+                  <td className="px-4 py-4 sm:px-6 text-right">
+                    <button className="p-2 hover:bg-zinc-800 rounded-lg transition-colors text-zinc-500 hover:text-white">
                       <MoreVertical className="w-5 h-5" />
                     </button>
                   </td>

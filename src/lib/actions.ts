@@ -11,6 +11,7 @@ export async function addProduct(formData: FormData) {
   const costPrice = parseFloat(formData.get('costPrice') as string);
   const sellingPrice = parseFloat(formData.get('sellingPrice') as string);
   const minStockLevel = parseInt(formData.get('minStockLevel') as string);
+  const image = formData.get('image') as string;
 
   await prisma.product.create({
     data: {
@@ -21,6 +22,7 @@ export async function addProduct(formData: FormData) {
       costPrice,
       sellingPrice,
       minStockLevel,
+      image,
       currentStock: 0,
     },
   });
