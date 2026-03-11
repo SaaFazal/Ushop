@@ -21,6 +21,7 @@ function cn(...inputs: ClassValue[]) {
 
 const menuItems = [
   { icon: LayoutDashboard, label: 'Dashboard', href: '/' },
+  { icon: ShoppingCart, label: 'Supermarket Till', href: '/till' },
   { icon: Package, label: 'Inventory', href: '/inventory' },
   { icon: PlusCircle, label: 'Stock In', href: '/inventory/stock-in' },
   { icon: AlertTriangle, label: 'Expiry Alerts', href: '/alerts' },
@@ -71,7 +72,7 @@ export default function Sidebar({ className, "aria-hidden": ariaHidden }: { clas
         <div className="flex items-center gap-3 p-2 bg-zinc-900 rounded-lg border border-zinc-800">
           <div className="w-8 h-8 rounded-full bg-zinc-700" />
           <div className="flex-1 overflow-hidden">
-            <p className="text-sm font-medium text-white truncate">U-CAFÉ Admin</p>
+            <p className="text-sm font-medium text-white truncate">Ushop Admin</p>
             <p className="text-xs text-zinc-500 truncate">admin@ushop.com</p>
           </div>
         </div>

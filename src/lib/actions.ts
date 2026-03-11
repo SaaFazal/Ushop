@@ -94,3 +94,38 @@ export async function syncSale(productId: string, quantity: number) {
   revalidatePath('/inventory');
   revalidatePath('/');
 }
+
+export async function processCheckout(items: { productId: string; quantity: number }[]) {
+  await prisma.$transaction(async (tx: any) => {
+    for (const item of items) {
+      // 1. Reduce total stock
+      await tx.product.update({
+        where: { id: item.productId },
+        data: {
+          currentStock: { decrement: item.quantity },
+        },
+      });
+
+      // 2. Reduce from batches (FIFO)
+      const batches = await tx.batch.findMany({
+        where: { productId: item.productId, quantity: { gt: 0 } },
+        orderBy: { receivedAt: 'asc' },
+      });
+
+      let remainingToReduce = item.quantity;
+      for (const batch of batches) {
+        if (remainingToReduce <= 0) break;
+
+        const reduction = Math.min(batch.quantity, remainingToReduce);
+        await tx.batch.update({
+          where: { id: batch.id },
+          data: { quantity: { decrement: reduction } },
+        });
+        remainingToReduce -= reduction;
+      }
+    }
+  });
+
+  revalidatePath('/inventory');
+  revalidatePath('/');
+}
